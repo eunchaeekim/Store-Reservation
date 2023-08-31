@@ -33,8 +33,8 @@ public class UserService {
 
         User user = User.builder()
                 .userPhoneNum(userPhoneNum)
-                .userPassword(passwordEncoder.encode(userCreateDto.getUserPassword()))
-                .roles(Collections.singletonList("USER"))
+                .userPassword(passwordEncoder.encode(userCreateDto.getUserPassword())) // passwordEncoder 내장함수,  사용자 비밀번호를 평문으로 저장하지 않고, 보안 강화를 위해 해시 함수를 이용하여 저장
+                .roles(Collections.singletonList("USER")) // collections 내장함수
                 .build();
 
         return userRepository.save(user).getUserId();
@@ -43,15 +43,21 @@ public class UserService {
     //로그인
     // 사용자의 전화번호와 비밀번호를 확인하여 로그인을 처리하고, 로그인이 성공하면 해당 사용자에 대한 JWT 토큰을 생성하여 반환
     public String login(UserCreateDto userCreateDto) {
+        // userRepository에서 사용자의 전화번호를 기반으로 검색하고, 존재하지 않으면 NotExistUserException을 발생시킵니다.
         User user = userRepository.findByUserPhoneNum(userCreateDto.getUserPhoneNum())
                 .orElseThrow(NotExistUserException::new);
+
+        // 사용자가 입력한 비밀번호와 저장된 비밀번호를 비교합니다.
         if (!passwordEncoder.matches(userCreateDto.getUserPassword(), user.getUserPassword())) {
+            // 비밀번호가 일치하지 않으면 PasswordNotMatchException을 발생시킵니다.
             throw new PasswordNotMatchException();
         }
+
+        // 사용자의 전화번호와 역할 정보를 활용하여 JWT 토큰을 생성하고 반환합니다.
         return jwtTokenProvider.createToken(user.getUserPhoneNum(), user.getRoles());
     }
 
-    // 여기부터 <<
+
     //회원 삭제
     public boolean deleteUser(String userPhoneNum, String password) {
         Optional<User> optionalUser = userRepository.findByUserPhoneNum(userPhoneNum);
@@ -67,6 +73,5 @@ public class UserService {
             throw new NotExistUserException();
         }
     }
-    // 여기까지>>
 
 }

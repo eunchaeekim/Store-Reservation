@@ -10,6 +10,7 @@ import com.example.store.partner.domain.entity.Store;
 import com.example.store.partner.domain.repository.StoreRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpServletRequest;

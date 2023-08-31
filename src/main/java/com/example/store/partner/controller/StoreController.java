@@ -62,11 +62,14 @@ public class StoreController {
     }
 
     // 모든 매장 정보 확인
+    // 아래처럼 작성해도 되지만 필요한 컬럼만 가져오기 위해 따로 service 가져옴
+    // List<Store> stores = storeRepository.findAll();
     @ApiOperation(value = "상점 전체 조회", notes = "모든 매장의 목록을 확인합니다.")
     @GetMapping("/view")
     public List<Map<String, Object>> getAllStores() {
         return storeService.getAllStores();
     }
+
 
     @ApiOperation(value = "상점 가나다순 조회", notes = "모든 매장의 목록을 가나다순으로 확인합니다.")
     @GetMapping("/view/name")

@@ -17,7 +17,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final JwtTokenProvider jwtTokenProvider;
 
-    // 암호화에 필요한 PasswordEncoder 를 Bean 등록합니다.
+    // Spring Security 설정에서 사용될 비밀번호 암호화 방식을 설정하는 역할
+    // BCryptPasswordEncoder는 단방향 해시 함수인 BCrypt를 사용하여 비밀번호를 안전하게 암호화하는 데 사용됩니다.
+    // BCrypt는 해시된 비밀번호를 저장할 때 솔트(Salt)를 사용하여 보안을 높이는 방법을 채택하고 있습니다.
+    // 솔트를 사용하면 같은 비밀번호라도 각각 다른 해시 결과가 생성되므로 레인보우 테이블 공격 등을 방지할 수 있습니다.
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

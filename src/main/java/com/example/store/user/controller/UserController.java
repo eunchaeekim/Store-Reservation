@@ -23,16 +23,16 @@ public class UserController {
         return ResponseEntity.ok("join successfully");
     }
 
+    @ApiOperation(value = "로그인", notes = "jwt 토큰을 사용하여 로그인시 토큰을 부여합니다.")
+    @PostMapping("/login")
+    public String login(@RequestBody UserCreateDto userCreateDto) {
+        return "Bearer " + userService.login(userCreateDto);
+    }
+
     @ApiOperation(value = "회원 탈퇴", notes = "아이디(휴대폰 번호), 비밀번호를 통해 회원탈퇴 요청을 보냅니다.")
     @DeleteMapping("/delete")
     public ResponseEntity<String> deleteUser(@RequestBody UserDeleteDto userDeleteDto) {
         userService.deleteUser(userDeleteDto.getUserPhoneNum(), userDeleteDto.getUserPassword());
         return ResponseEntity.ok("delete successfully");
-    }
-
-    @ApiOperation(value = "로그인", notes = "jwt 토큰을 사용하여 로그인시 토큰을 부여합니다.")
-    @PostMapping("/login")
-    public String login(@RequestBody UserCreateDto userCreateDto) {
-        return "Bearer " + userService.login(userCreateDto);
     }
 }

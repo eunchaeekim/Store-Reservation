@@ -48,17 +48,24 @@ public class JwtTokenProvider {
 
     // JWT 토큰 생성
     public String createToken(String userPk, List<String> roles) {
-        Claims claims = Jwts.claims().setSubject(userPk); // JWT payload 에 저장되는 정보단위
+        // JWT 토큰 내에 저장될 정보를 나타내는 Claims 객체를 생성합니다.
+        Claims claims = Jwts.claims().setSubject(userPk);
+
+        // Roles 정보를 claims에 추가합니다.
         claims.put("roles", roles); // 정보는 key / value 쌍으로 저장된다.
+
+        // 현재 시간을 가져옵니다.
         Date now = new Date();
+
+        // JWT 토큰을 빌드하는 시작점입니다.
         return Jwts.builder()
                 .setClaims(claims) // 정보 저장
                 .setIssuedAt(now) // 토큰 발행 시간 정보
-                .setExpiration(new Date(now.getTime() + tokenValidTime)) // set Expire Time
-                .signWith(SignatureAlgorithm.HS512, secretKey)  // 사용할 암호화 알고리즘과
-                // signature 에 들어갈 secret값 세팅
-                .compact();
+                .setExpiration(new Date(now.getTime() + tokenValidTime)) // 토큰 만료 시간 설정
+                .signWith(SignatureAlgorithm.HS512, secretKey) // 암호화 알고리즘과 시크릿 키를 사용하여 서명합니다.
+                .compact(); // 최종적으로 토큰을 생성하고 문자열로 반환합니다.
     }
+
 
     // JWT 토큰에서 인증 정보 조회
     public Authentication getAuthentication(String token) {
@@ -71,7 +78,7 @@ public class JwtTokenProvider {
         return Jwts.parser().setSigningKey(secretKey).parseClaimsJws(token).getBody().getSubject();
     }
 
-    // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "Bearer +TOKEN값'
+    // Request의 Header에서 token 값을 가져옵니다. "Authorization" : "Bearer +TOKEN 값'
     public String resolveToken(HttpServletRequest request) {
         String token = request.getHeader((TOKEN_HEADER));
 
@@ -123,8 +130,9 @@ public class JwtTokenProvider {
         String userPk = getUserPk(token); // 토큰에서 userPk 추출
         // userPk를 사용하여 userPhoneNum 찾기
         UserDetails userDetails = userDetailsService.loadUserByUsername(userPk);
+
         if (userDetails instanceof User) {
-            User user = (User) userDetails;
+            User user = (User) userDetails;  // 다운캐스팅
             return user.getUserPhoneNum(); // userPhoneNum 반환
         }
         return null;

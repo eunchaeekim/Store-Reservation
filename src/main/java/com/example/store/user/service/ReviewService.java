@@ -38,7 +38,7 @@ public class ReviewService {
             throw new NotExistStoreException();
         }
 
-        //상점 이용하지 않은 고객이 이용하려고 할 때
+        // 상점 이용하지 않은 고객이 이용하려고 할 때
         // 예약한 고객인지 확인하여 음식을 먹었는지 검토
         boolean hasReservation = reservationRepository.existsByStoreIdAndUserPhoneNum(store.getStoreId(), userPhoneNum);
         if (!hasReservation) {
@@ -77,7 +77,7 @@ public class ReviewService {
         storeRepository.save(store);
     }
 
-    //리뷰 삭제
+    // 리뷰 삭제
     public void deleteReview(Long reviewId, HttpServletRequest request) {
         //토큰에서 리뷰 작성자의 id 가져옴
         String token = jwtTokenProvider.resolveToken(request);
@@ -95,7 +95,7 @@ public class ReviewService {
         reviewRepository.delete(review);
     }
 
-    //상점 이름으로 상점에 대한 모든 리뷰 조회
+    // 상점 이름으로 상점에 대한 모든 리뷰 조회
     public List<Review> viewReview(String storeName) {
         //상점 조회
         Store store = storeRepository.findByStoreName(storeName);
