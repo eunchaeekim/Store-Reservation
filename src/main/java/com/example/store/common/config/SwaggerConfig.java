@@ -34,13 +34,14 @@ public class SwaggerConfig {
                 // API 문서의 제목을 설정합니다.
                 .title("Store API")
                 // API 문서에 대한 간단한 설명을 설정합니다.
-                .description("https://github.com/withbeluga/Store-Reservation.git")
+                .description("식당 예약 시스템입니다.")
                 // API 문서의 버전 정보를 설정합니다.
                 .version("0.1")
                 .build();
     }
 
-    // 소비하는 컨텐츠 타입을 설정하는 메서드입니다.
+    // 클라이언트가 서버에게 어떤 데이터 형식으로 데이터를 전송할 것인지를 정의
+    // -> JSON 형식과 폼 데이터(application/x-www-form-urlencoded)를 사용하여 데이터를 전송하도록 설정
     private Set<String> getConsumeContentTypes() {
         Set<String> consumes = new HashSet<>();
         consumes.add("application/json;charset=UTF-8");
@@ -48,10 +49,11 @@ public class SwaggerConfig {
         return consumes;
     }
 
-    // 생성하는 컨텐츠 타입을 설정하는 메서드입니다.
+    // 서버가 클라이언트에게 제공하는 데이터 형식을 설정하는 역할 -> JSON 형식으로 데이터를 생성하도록 설정
     private Set<String> getProduceContentTypes() {
         Set<String> produces = new HashSet<>();
         produces.add("application/json;charset=UTF-8");
         return produces;
     }
+
 }
