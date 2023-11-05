@@ -1,21 +1,83 @@
 spring:
-  mvc:
-    pathmatch:
-      matching-strategy: ant_path_matcher
   datasource:
-    url: jdbc:mariadb://localhost:3306/store
-    driver-class-name: org.mariadb.jdbc.Driver
-    username: store
-    password: 1
+    hikari:
+      maximum-pool-size: 20
+
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/mentormate
+    username: root
+    password: rootroot
+
+  data:
+    redis:
+      repositories:
+        enabled: false
 
   jpa:
-    database-platform: org.hibernate.dialect.MySQL5InnoDBDialect
-    open-in-view: false
-    show-sql: true
-    hibernate.hbm2ddl.auto: update
-    # hibernate:
-    #  format_sql: true
-    #  ddl-auto: update
+    generate-ddl: true
+    hibernate:
+      ddl-auto: create
 
-  jwt:
-    secret: test # 암호화 (터미널에서 echo '~~~' | base64)
+  redis:
+    host: 43.202.208.73
+    port: 6379
+    password: '1234'
+
+  mail:
+    host: smtp.gmail.com
+    port: 587
+    username: sungjin9663@gmail.com
+    password: lcmjggcwuxbnmmvn
+    properties:
+      mail:
+        smtp:
+          starttls:
+            enable: true
+    url: http://ec2-43-202-208-73.ap-northeast-2.compute.amazonaws.com:8080/user/join/email/auth/verify
+
+  OAuth2:
+    naver:
+      url: https://nid.naver.com/oauth2.0/authorize
+      client-id: OrpnAjlttv8YhDER3qSW
+      client-secret: e5x07rgPGp
+      callback-url: http://localhost:5173/login/oauth2/code/naver
+      token-url: https://nid.naver.com/oauth2.0/token
+      userinfo-url: https://openapi.naver.com/v1/nid/me
+      scope:
+    kakao:
+      url: https://kauth.kakao.com/oauth/authorize
+      client-id: 32a3e303979a0fb4452018aa4b939e28
+      client-secret: MQjCqupjAvk5TMOLIBZdOTjmuAXEPM01
+      callback-url: http://localhost:5173/login/oauth2/code/kakao
+      token-url: https://kauth.kakao.com/oauth/token
+      userinfo-url: https://kapi.kakao.com/v2/user/me
+      scope: profile_nickname
+    join:
+      host: http://43.202.208.73:8080
+      url: /user/join/success
+
+jwt:
+  secretKey: dasdasf234fuhvertsv34789yhiuFDSIUFGYDTE5r222 # base64로 인코딩된 암호 키, HS512를 사용할 것이기 때문에, 512비트(64바이트) 이상이 되어야 합니다. >영숫자 조합으로
+
+  access:
+    expiration: 3600000 # 1시간(60분) (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h))
+    header: Authorization
+
+  refresh:
+    expiration: 1209600000 #  (1000L(ms -> s) * 60L(s -> m) * 60L(m -> h) * 24L(h -> 하루) * 14(2주))
+    header: Authorization-refresh
+
+
+cloud:
+  aws:
+    s3:
+      bucket: mentomate
+    stack.auto: false
+    region:
+      static: ap-northeast-2
+    credentials:
+      accessKey: AKIA3HK3SGNENQFQE5NP
+      secretKey: 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
+
+
+
